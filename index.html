@@ -9,7 +9,7 @@
     function setUrlLocation() {
         window.location = "capitalone://";
    }
-   function setUrlLocation(e) {
+   function setUrlLocationP(e) {
         window.location = "capitalone://";
         e.preventDefault();
    }
@@ -18,7 +18,7 @@
   <h1>Hello World</h1>
   <p>This is a basic HTML page.</p>
   <a href="capitalone://">Open Ease App</a>
-  <a onclick="setUrlLocation(e)" href="javascript:void(0)">preventDefault</a>
+  <a onclick="setUrlLocationP(e)" href="javascript:void(0)">preventDefault</a>
   <button onclick="setUrlLocation()" style="border: 1px solid orangered;">Open Ease</button>
 
   <iframe 
