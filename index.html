@@ -16,7 +16,7 @@
    }
  </script> -->
 
-<script>
+<!-- <script>
   function openApp(url, fallbackUrl) {
       var timeout;
       var hasApp = true;
@@ -50,6 +50,72 @@
       openApp("capitalone://", window.location.href);
       console.log("Evan : prevent called : e : ", e);
   }
+</script> -->
+
+<script>
+  function checkAppInstalled(appScheme, appStoreUrl, playStoreUrl) {
+  // Current timestamp to measure elapsed time
+  const startTime = Date.now();
+  
+  // Time threshold to determine if app opened (in milliseconds)
+  const timeThreshold = 500;
+  
+  // Detect platform to use the appropriate store link
+  const isAndroid = /Android/i.test(navigator.userAgent);
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const storeUrl = isAndroid ? playStoreUrl : isIOS ? appStoreUrl : appStoreUrl;
+  
+  // Set up detection for when user returns to the browser
+  let isAppDetectionComplete = false;
+  
+  // Handle visibility change (user returns to browser)
+  document.addEventListener('visibilitychange', function() {
+    if (!document.hidden && !isAppDetectionComplete) {
+      // User returned to browser quickly, app likely opened
+      clearTimeout(redirectTimeout);
+      isAppDetectionComplete = true;
+      console.log('App appears to be installed');
+    }
+  });
+  
+  // Alternative detection method for some browsers
+  window.addEventListener('pagehide', function() {
+    if (!isAppDetectionComplete) {
+      clearTimeout(redirectTimeout);
+      isAppDetectionComplete = true;
+    }
+  });
+  
+  // For modern browsers that support blur
+  window.addEventListener('blur', function() {
+    if (!isAppDetectionComplete) {
+      clearTimeout(redirectTimeout);
+      isAppDetectionComplete = true;
+      console.log('App appears to be installed (window blurred)');
+    }
+  });
+  
+  // Set timeout for fallback
+  const redirectTimeout = setTimeout(function() {
+    if (!isAppDetectionComplete) {
+      isAppDetectionComplete = true;
+      console.log('App not installed, redirecting to store');
+      window.location.href = storeUrl;
+    }
+  }, timeThreshold);
+  
+  // Try to open the app
+  window.location.href = appScheme;
+}
+
+// Example usage:
+function tryOpenApp() {
+  checkAppInstalled(
+    'myapp://open', 
+    'capitalone://', 
+    'https://play.google.com/store/apps/details?id=com.example.myapp'
+  );
+}
 </script>
 
   <h1>Hello World</h1>
@@ -57,5 +123,8 @@
   <a href="capitalone://">Open Ease App</a>
   <a onclick="setUrlLocationP(event)" href="javascript:void(0)">preventDefault</a>
   <button onclick="setUrlLocation()" style="border: 1px solid firebrick;">Open Ease</button>
+  <button onclick="tryOpenApp()">Open App</button>
+
+
 </body>
 </html>
