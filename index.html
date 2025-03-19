@@ -5,16 +5,17 @@
   <title>My Basic HTML Page</title>
 </head>
 <body>
+  <script>
+    function setUrlLocation() {
+       console.log('Evan : setUrlLocation called...');
+       window.location = "capitalone://";
+   }
+ </script>
+
   <h1>Hello World</h1>
   <p>This is a basic HTML page.</p>
   <a href="capitalone://">Open Ease App</a>
-  <button (onclick)="setUrlLocation()" style="border: 1px solid crimson;">Open Ease</button>
+  <button (onclick)="setUrlLocation()" style="border: 1px solid orangered;">Open Ease</button>
 
-  <script>
-     function setUrlLocation() {
-        console.log('Evan : setUrlLocation called...');
-        window.location = "capitalone://";
-    }
-  </script>
 </body>
 </html>
