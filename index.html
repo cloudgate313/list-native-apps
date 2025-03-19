@@ -7,8 +7,11 @@
 <body>
   <script>
     function setUrlLocation() {
-       console.log('Evan : setUrlLocation called...');
-       window.location = "capitalone://";
+      try {
+        window.location = "capitalone://";
+      } catch (e) {
+        console.error('Error setting URL location:', e);
+        alert('Error setting URL location: ' + e.message);
    }
  </script>
 
