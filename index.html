@@ -53,75 +53,58 @@
 </script> -->
 
 <script>
-  function checkAppInstalled(appScheme, appStoreUrl, playStoreUrl) {
-  // Current timestamp to measure elapsed time
-  const startTime = Date.now();
+function checkAndFlagAppInstalled(appScheme) {
+  // Create storage for our flag
+  const setAppInstalledFlag = () => {
+    localStorage.setItem('appInstalled', 'true');
+    alert('App detected and flag set!');
+  };
   
-  // Time threshold to determine if app opened (in milliseconds)
-  const timeThreshold = 500;
+  // Set up detection via blur (app opening takes focus from browser)
+  const blurHandler = () => {
+    setAppInstalledFlag();
+  };
   
-  // Detect platform to use the appropriate store link
-  const isAndroid = /Android/i.test(navigator.userAgent);
-  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-  const storeUrl = isAndroid ? playStoreUrl : isIOS ? appStoreUrl : appStoreUrl;
-  
-  // Set up detection for when user returns to the browser
-  let isAppDetectionComplete = false;
-  
-  // Handle visibility change (user returns to browser)
-  document.addEventListener('visibilitychange', function() {
-    if (!document.hidden && !isAppDetectionComplete) {
-      // User returned to browser quickly, app likely opened
-      clearTimeout(redirectTimeout);
-      isAppDetectionComplete = true;
-      alert('App appears to be installed');
+  // Set up detection via visibility change (user returns to browser)
+  const visibilityHandler = () => {
+    if (!document.hidden) {
+      setAppInstalledFlag();
+      window.removeEventListener('blur', blurHandler);
+      document.removeEventListener('visibilitychange', visibilityHandler);
     }
-  });
+  };
   
-  // Alternative detection method for some browsers
-  window.addEventListener('pagehide', function() {
-    if (!isAppDetectionComplete) {
-      clearTimeout(redirectTimeout);
-      isAppDetectionComplete = true;
-    }
-  });
+  // Add our event listeners
+  window.addEventListener('blur', blurHandler, { once: true });
+  document.addEventListener('visibilitychange', visibilityHandler);
   
-  // For modern browsers that support blur
-  window.addEventListener('blur', function() {
-    if (!isAppDetectionComplete) {
-      clearTimeout(redirectTimeout);
-      isAppDetectionComplete = true;
-      alert('App appears to be installed (window blurred)');
-    }
-  });
+  // Set timeout to remove listeners if app isn't installed
+  setTimeout(() => {
+    window.removeEventListener('blur', blurHandler);
+    document.removeEventListener('visibilitychange', visibilityHandler);
+    alert('App detection complete (not installed)');
+  }, 500);
   
-  // Set timeout for fallback
-  const redirectTimeout = setTimeout(function() {
-    if (!isAppDetectionComplete) {
-      isAppDetectionComplete = true;
-      alert('Evan : App not installed, redirecting to store');
-      // window.location.href = storeUrl;
-    }
-  }, timeThreshold);
-
-  // const testMode = false;
-  // if (testMode) {
-  //   console.log('Would redirect to store');
-  // } else {
-  //   window.location.href = storeUrl;
-  // }
+  // Try to open the app using an iframe to minimize disruption
+  const iframe = document.createElement('iframe');
+  iframe.style.display = 'none';
+  iframe.src = appScheme;
+  document.body.appendChild(iframe);
   
-  // Try to open the app
-  // window.location.href = appScheme;
+  // Remove the iframe after a short time
+  setTimeout(() => {
+    document.body.removeChild(iframe);
+  }, 100);
 }
 
-// Example usage:
-function tryOpenApp() {
-  checkAppInstalled(
-    'myapp://open', 
-    'capitalone://', 
-    'https://play.google.com/store/apps/details?id=com.example.myapp'
-  );
+// Usage (must be triggered by user interaction)
+document.getElementById('check-app-button').addEventListener('click', () => {
+  checkAndFlagAppInstalled('capitalone://');
+});
+
+// Later, you can check the flag:
+function isAppInstalled() {
+  return localStorage.getItem('appInstalled') === 'true';
 }
 </script>
 
