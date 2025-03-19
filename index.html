@@ -11,8 +11,7 @@
    }
    function setUrlLocationP(e) {
         e.preventDefault();
-        window.open('capitalone://', '_blank')
-        // window.location = "capitalone://";
+        window.location = "capitalone://";
         console.log("Evan : prevent called : e : ", e);
    }
  </script>
@@ -22,15 +21,5 @@
   <a href="capitalone://">Open Ease App</a>
   <a onclick="setUrlLocationP(event)" href="javascript:void(0)">preventDefault</a>
   <button onclick="setUrlLocation()" style="border: 1px solid orangered;">Open Ease</button>
-
-  <iframe 
-    src="https://www.w3schools.com"
-    width="600"
-    height="400"
-    style="border: 1px solid #ccc;"
-    >
-  </iframe>
-  <iframe src="https://www.w3schools.com" title="W3Schools Free Online Web Tutorials">
-  </iframe>
 </body>
 </html>
