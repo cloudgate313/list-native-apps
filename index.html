@@ -47,7 +47,7 @@
 
   function setUrlLocationP(e) {
       e.preventDefault();
-      openApp("capitalone://", "https://www.capitalone.com");
+      openApp("capitalone://", window.location.href);
       console.log("Evan : prevent called : e : ", e);
   }
 </script>
