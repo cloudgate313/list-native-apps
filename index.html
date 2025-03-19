@@ -74,7 +74,7 @@
       // User returned to browser quickly, app likely opened
       clearTimeout(redirectTimeout);
       isAppDetectionComplete = true;
-      console.log('App appears to be installed');
+      alert('App appears to be installed');
     }
   });
   
@@ -91,7 +91,7 @@
     if (!isAppDetectionComplete) {
       clearTimeout(redirectTimeout);
       isAppDetectionComplete = true;
-      console.log('App appears to be installed (window blurred)');
+      alert('App appears to be installed (window blurred)');
     }
   });
   
@@ -99,13 +99,20 @@
   const redirectTimeout = setTimeout(function() {
     if (!isAppDetectionComplete) {
       isAppDetectionComplete = true;
-      console.log('App not installed, redirecting to store');
-      window.location.href = storeUrl;
+      alert('Evan : App not installed, redirecting to store');
+      // window.location.href = storeUrl;
     }
   }, timeThreshold);
+
+  // const testMode = false;
+  // if (testMode) {
+  //   console.log('Would redirect to store');
+  // } else {
+  //   window.location.href = storeUrl;
+  // }
   
   // Try to open the app
-  window.location.href = appScheme;
+  // window.location.href = appScheme;
 }
 
 // Example usage:
