@@ -5,7 +5,7 @@
   <title>My Basic HTML Page</title>
 </head>
 <body>
-  <script>
+  <!-- <script>
     function setUrlLocation() {
         window.location = "capitalone://";
    }
@@ -14,7 +14,43 @@
         window.location = "capitalone://";
         console.log("Evan : prevent called : e : ", e);
    }
- </script>
+ </script> -->
+
+<script>
+  function openApp(url, fallbackUrl) {
+      var timeout;
+      var hasApp = true;
+      var t = 1000;
+      var iframe = document.createElement('iframe');
+      iframe.style.border = 'none';
+      iframe.style.width = '1px';
+      iframe.style.height = '1px';
+      iframe.onload = function() {
+          hasApp = false;
+      };
+
+      document.body.appendChild(iframe);
+
+      timeout = setTimeout(function() {
+          if (!hasApp) {
+              window.location = fallbackUrl;
+          }
+          document.body.removeChild(iframe);
+      }, t);
+
+      iframe.src = url;
+  }
+
+  function setUrlLocation() {
+      openApp("capitalone://", "https://www.capitalone.com");
+  }
+
+  function setUrlLocationP(e) {
+      e.preventDefault();
+      openApp("capitalone://", "https://www.capitalone.com");
+      console.log("Evan : prevent called : e : ", e);
+  }
+</script>
 
   <h1>Hello World</h1>
   <p>This is a basic HTML page.</p>
