@@ -11,12 +11,12 @@
     let fallbackLink = 'https://yourapp.com/download';
 
     // isiOS isAndroid implement by yourself
-    if (isiOS() || isAndroid()) {
+    // if (isiOS() || isAndroid()) {
         window.location = 'capitalone://';
 
         const androidAppStoreLink = 'https://play.google.com/store/apps';
         const iosAppStoreLink = 'https://apps.apple.com/us';
-        fallbackLink = isAndroid() ? androidAppStoreLink : iosAppStoreLink;
+        // fallbackLink = isAndroid() ? androidAppStoreLink : iosAppStoreLink;
         // setTimeout still executes after the app is opened, so the current page will navigate to the fallback link
         // to prevent this, I use the document.hasFocus function to check
         setTimeout(function () {
@@ -31,14 +31,14 @@
             //     // window.location = fallbackLink;
             // }
         }, 1000);
-    }
+    // }
 }
 
 </script>
 
   <h1>Hello World</h1>
   <p>This is a basic HTML page.</p>
-  <button onclick="redirectToApp()" style="border: 3px solid crimson;">redirectToApp</button>
+  <button onclick="redirectToApp()" style="border: 3px solid rebeccapurple;">redirectToApp</button>
 
 
 </body>
