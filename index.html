@@ -7,40 +7,65 @@
 <body>
 
 <script>
-  function redirectToApp(e) {
-    let fallbackLink = 'https://yourapp.com/download';
 
-    // isiOS isAndroid implement by yourself
-    // if (isiOS() || isAndroid()) {
-        window.location = 'capitalone://';
-        e.preventDefault();
-
-        const androidAppStoreLink = 'https://play.google.com/store/apps';
-        const iosAppStoreLink = 'https://apps.apple.com/us';
-        // fallbackLink = isAndroid() ? androidAppStoreLink : iosAppStoreLink;
-        // setTimeout still executes after the app is opened, so the current page will navigate to the fallback link
-        // to prevent this, I use the document.hasFocus function to check
-        setTimeout(function () {
-            // if the app is opened, the document won't be focused
-            // so if app is not installed, the document will be focused
-
-            const message = document.hasFocus() ? 'App is not installed' : 'App is installed';
-            alert(message);
-
-            // if (document.hasFocus()) {
-            //     alert('App is not installed');
-            //     // window.location = fallbackLink;
-            // }
-        }, 1000);
-    // }
+async function isURLUp(url) {
+  try {
+    const response = await fetch(url, { method: 'HEAD' });
+    return response.ok;
+  } catch (error) {
+    return false;
+  }
 }
+
+
+function redirectToApp() {
+  // Example usage:
+  const urlToCheck = 'capitalone://';
+
+  isURLUp(urlToCheck)
+    .then(isUp => {
+      if (isUp) {
+        alert(`${urlToCheck} is up.`);
+      } else {
+        alert(`${urlToCheck} is down or unreachable.`);
+      }
+    });
+}
+
+
+//   function redirectToApp(e) {
+//     let fallbackLink = 'https://yourapp.com/download';
+
+//     // isiOS isAndroid implement by yourself
+//     // if (isiOS() || isAndroid()) {
+//         window.location = 'capitalone://';
+//         e.preventDefault();
+
+//         const androidAppStoreLink = 'https://play.google.com/store/apps';
+//         const iosAppStoreLink = 'https://apps.apple.com/us';
+//         // fallbackLink = isAndroid() ? androidAppStoreLink : iosAppStoreLink;
+//         // setTimeout still executes after the app is opened, so the current page will navigate to the fallback link
+//         // to prevent this, I use the document.hasFocus function to check
+//         setTimeout(function () {
+//             // if the app is opened, the document won't be focused
+//             // so if app is not installed, the document will be focused
+
+//             const message = document.hasFocus() ? 'App is not installed' : 'App is installed';
+//             alert(message);
+
+//             // if (document.hasFocus()) {
+//             //     alert('App is not installed');
+//             //     // window.location = fallbackLink;
+//             // }
+//         }, 1000);
+//     // }
+// }
 
 </script>
 
   <h1>Hello World</h1>
   <p>This is a basic HTML page.</p>
-  <a onclick="redirectToApp(event)" style="border: 8px solid firebrick;" href="javascript:void(0)">redirectToApp</a>
-
+  <a onclick="redirectToApp()" style="border: 8px solid blue;" href="javascript:void(0)">redirectToApp</a>
 
 </body>
 </html>
