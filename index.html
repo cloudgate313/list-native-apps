@@ -7,12 +7,13 @@
 <body>
 
 <script>
-  function redirectToApp() {
+  function redirectToApp(e) {
     let fallbackLink = 'https://yourapp.com/download';
 
     // isiOS isAndroid implement by yourself
     // if (isiOS() || isAndroid()) {
         window.location = 'capitalone://';
+        e.preventDefault();
 
         const androidAppStoreLink = 'https://play.google.com/store/apps';
         const iosAppStoreLink = 'https://apps.apple.com/us';
@@ -38,7 +39,7 @@
 
   <h1>Hello World</h1>
   <p>This is a basic HTML page.</p>
-  <button onclick="redirectToApp()" style="border: 8px solid orangered;">redirectToApp</button>
+  <a onclick="redirectToApp(event)" style="border: 8px solid firebrick;" href="javascript:void(0)">redirectToApp</a>
 
 
 </body>
