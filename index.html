@@ -53,67 +53,34 @@
 </script> -->
 
 <script>
-function checkAndFlagAppInstalled(appScheme) {
-  // Create storage for our flag
-  const setAppInstalledFlag = () => {
-    localStorage.setItem('appInstalled', 'true');
-    alert('App detected and flag set!');
-  };
-  
-  // Set up detection via blur (app opening takes focus from browser)
-  const blurHandler = () => {
-    setAppInstalledFlag();
-  };
-  
-  // Set up detection via visibility change (user returns to browser)
-  const visibilityHandler = () => {
-    if (!document.hidden) {
-      setAppInstalledFlag();
-      window.removeEventListener('blur', blurHandler);
-      document.removeEventListener('visibilitychange', visibilityHandler);
+  function redirectToApp() {
+    let fallbackLink = 'https://yourapp.com/download';
+
+    // isiOS isAndroid implement by yourself
+    if (isiOS() || isAndroid()) {
+        window.location = 'capitalone://';
+
+        const androidAppStoreLink = 'https://play.google.com/store/apps';
+        const iosAppStoreLink = 'https://apps.apple.com/us';
+        fallbackLink = isAndroid() ? androidAppStoreLink : iosAppStoreLink;
+        // setTimeout still executes after the app is opened, so the current page will navigate to the fallback link
+        // to prevent this, I use the document.hasFocus function to check
+        setTimeout(function () {
+            // if the app is opened, the document won't be focused
+            // so if app is not installed, the document will be focused
+            if (document.hasFocus()) {
+                alert('App is not installed');
+                // window.location = fallbackLink;
+            }
+        }, 1000);
     }
-  };
-  
-  // Add our event listeners
-  window.addEventListener('blur', blurHandler, { once: true });
-  document.addEventListener('visibilitychange', visibilityHandler);
-  
-  // Set timeout to remove listeners if app isn't installed
-  setTimeout(() => {
-    window.removeEventListener('blur', blurHandler);
-    document.removeEventListener('visibilitychange', visibilityHandler);
-    alert('App detection complete (not installed)');
-  }, 500);
-  
-  // Try to open the app using an iframe to minimize disruption
-  const iframe = document.createElement('iframe');
-  iframe.style.display = 'none';
-  iframe.src = appScheme;
-  document.body.appendChild(iframe);
-  
-  // Remove the iframe after a short time
-  setTimeout(() => {
-    document.body.removeChild(iframe);
-  }, 100);
 }
 
-// Usage (must be triggered by user interaction)
-document.getElementById('check-app-button').addEventListener('click', () => {
-  checkAndFlagAppInstalled('capitalone://');
-});
-
-// Later, you can check the flag:
-function isAppInstalled() {
-  return localStorage.getItem('appInstalled') === 'true';
-}
 </script>
 
   <h1>Hello World</h1>
   <p>This is a basic HTML page.</p>
-  <a href="capitalone://">Open Ease App</a>
-  <a onclick="setUrlLocationP(event)" href="javascript:void(0)">preventDefault</a>
-  <button onclick="setUrlLocation()" style="border: 1px solid firebrick;">Open Ease</button>
-  <button onclick="tryOpenApp()">Open App</button>
+  <button onclick="redirectToApp()">redirectToApp</button>
 
 
 </body>
