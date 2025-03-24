@@ -32,39 +32,70 @@ function redirectToApp() {
     });
 }
 
+  const openAppLink = document.getElementById('openAppLink');
 
-//   function redirectToApp(e) {
-//     let fallbackLink = 'https://yourapp.com/download';
+  openAppLink.addEventListener('click', (event) => {
+    event.preventDefault(); // Prevent default browser behavior
 
-//     // isiOS isAndroid implement by yourself
-//     // if (isiOS() || isAndroid()) {
-//         window.location = 'capitalone://';
-//         e.preventDefault();
+    // Try to open the app with the deep link
+    window.location.href = "capitalone://";
 
-//         const androidAppStoreLink = 'https://play.google.com/store/apps';
-//         const iosAppStoreLink = 'https://apps.apple.com/us';
-//         // fallbackLink = isAndroid() ? androidAppStoreLink : iosAppStoreLink;
-//         // setTimeout still executes after the app is opened, so the current page will navigate to the fallback link
-//         // to prevent this, I use the document.hasFocus function to check
-//         setTimeout(function () {
-//             // if the app is opened, the document won't be focused
-//             // so if app is not installed, the document will be focused
+    // After a short delay, redirect to the Play Store if the app isn't installed
+    setTimeout(() => {
+      window.location.href = "https://www.redit.com";
+    }, 500); // Adjust the timeout as needed
+  });
 
-//             const message = document.hasFocus() ? 'App is not installed' : 'App is installed';
-//             alert(message);
+  function checkAppInstalledMinimalImpact(appScheme) {
+  return new Promise((resolve) => {
+    // Flag for detection
+    let appDetected = false;
+    
+    // Set up detection via blur event
+    const handleBlur = () => {
+      appDetected = true;
+      clearTimeout(timeoutId);
+      resolve(true);
+    };
+    
+    // Listen for blur event (app taking focus)
+    window.addEventListener('blur', handleBlur, { once: true });
+    
+    // Set timeout for detection failure
+    const timeoutId = setTimeout(() => {
+      window.removeEventListener('blur', handleBlur);
+      resolve(false);
+    }, 300);
+    
+    // Use hidden iframe instead of direct navigation
+    const iframe = document.createElement('iframe');
+    iframe.style.width = '1px';
+    iframe.style.height = '1px';
+    iframe.style.position = 'absolute';
+    iframe.style.top = '-100px';
+    iframe.style.visibility = 'hidden';
+    iframe.src = appScheme;
+    document.body.appendChild(iframe);
+    
+    // Remove iframe quickly
+    setTimeout(() => {
+      document.body.removeChild(iframe);
+    }, 100);
+  });
+}
 
-//             // if (document.hasFocus()) {
-//             //     alert('App is not installed');
-//             //     // window.location = fallbackLink;
-//             // }
-//         }, 1000);
-//     // }
-// }
+// Usage
+document.getElementById('check-button').addEventListener('click', async () => {
+  const isInstalled = await checkAppInstalledMinimalImpact('capitalone://');
+  localStorage.setItem('appInstalled', isInstalled ? 'true' : 'false');
+  alert(`App installed: ${isInstalled}`);
+});
 
 </script>
 
   <h1>Hello World</h1>
   <p>This is a basic HTML page.</p>
+  <a id="openAppLink" href="capitalone://">Open App</a>
   <button onclick="redirectToApp()" style="border: 8px solid blue;">redirectToApp</button>
 
 </body>
