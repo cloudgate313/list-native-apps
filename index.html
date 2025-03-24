@@ -5,52 +5,6 @@
   <title>My Basic HTML Page</title>
 </head>
 <body>
-  <!-- <script>
-    function setUrlLocation() {
-        window.location = "capitalone://";
-   }
-   function setUrlLocationP(e) {
-        e.preventDefault();
-        window.location = "capitalone://";
-        console.log("Evan : prevent called : e : ", e);
-   }
- </script> -->
-
-<!-- <script>
-  function openApp(url, fallbackUrl) {
-      var timeout;
-      var hasApp = true;
-      var t = 1000;
-      var iframe = document.createElement('iframe');
-      iframe.style.border = 'none';
-      iframe.style.width = '1px';
-      iframe.style.height = '1px';
-      iframe.onload = function() {
-          hasApp = false;
-      };
-
-      document.body.appendChild(iframe);
-
-      timeout = setTimeout(function() {
-          if (!hasApp) {
-              window.location = fallbackUrl;
-          }
-          document.body.removeChild(iframe);
-      }, t);
-
-      iframe.src = url;
-  }
-
-  function setUrlLocation() {
-      openApp("capitalone://", "https://www.capitalone.com");
-  }
-
-  function setUrlLocationP(e) {
-      e.preventDefault();
-      openApp("capitalone://", window.location.href);
-      console.log("Evan : prevent called : e : ", e);
-  }
-</script> -->
 
 <script>
   function redirectToApp() {
@@ -68,10 +22,14 @@
         setTimeout(function () {
             // if the app is opened, the document won't be focused
             // so if app is not installed, the document will be focused
-            if (document.hasFocus()) {
-                alert('App is not installed');
-                // window.location = fallbackLink;
-            }
+
+            const message = document.hasFocus() ? 'App is not installed' : 'App is installed';
+            alert(message);
+
+            // if (document.hasFocus()) {
+            //     alert('App is not installed');
+            //     // window.location = fallbackLink;
+            // }
         }, 1000);
     }
 }
