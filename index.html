@@ -32,21 +32,7 @@ function redirectToApp() {
     });
 }
 
-  const openAppLink = document.getElementById('openAppLink');
-
-  openAppLink.addEventListener('click', (event) => {
-    event.preventDefault(); // Prevent default browser behavior
-
-    // Try to open the app with the deep link
-    window.location.href = "capitalone://";
-
-    // After a short delay, redirect to the Play Store if the app isn't installed
-    setTimeout(() => {
-      window.location.href = "https://www.redit.com";
-    }, 500); // Adjust the timeout as needed
-  });
-
-  function checkAppInstalledMinimalImpact(appScheme) {
+function checkAppInstalledMinimalImpact(appScheme) {
   return new Promise((resolve) => {
     // Flag for detection
     let appDetected = false;
@@ -72,7 +58,7 @@ function redirectToApp() {
     iframe.style.width = '1px';
     iframe.style.height = '1px';
     iframe.style.position = 'absolute';
-    iframe.style.top = '-100px';
+    iframe.style.top = '100px';
     iframe.style.visibility = 'hidden';
     iframe.src = appScheme;
     document.body.appendChild(iframe);
@@ -95,7 +81,7 @@ document.getElementById('check-button').addEventListener('click', async () => {
 
   <h1>Hello World</h1>
   <p>This is a basic HTML page.</p>
-  <a id="openAppLink" href="capitalone://">Open App</a>
+  <!-- <a id="openAppLink">openAppLink</a> -->
   <button id="check-button">Check if App is Installed</button>
   <button onclick="redirectToApp()" style="border: 8px solid blue;">redirectToApp</button>
 
